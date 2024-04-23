@@ -1,16 +1,20 @@
 package ru.otus.vpavlova.web.app;
 
-import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.io.IOException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class HttpServer {
     private int port;
     private Dispatcher dispatcher;
+    private ExecutorService threadPool;
 
     public HttpServer(int port) {
         this.port = port;
         this.dispatcher = new Dispatcher();
+        this.threadPool = Executors.newCachedThreadPool();
     }
 
     public void start() {
@@ -20,7 +24,7 @@ public class HttpServer {
                 Socket socket = serverSocket.accept();
                 System.out.println("Установлено соединение с клиентом: " + socket.getInetAddress());
 
-                Thread requestHandlerThread = new Thread(() -> {
+                threadPool.execute(() -> {
                     try {
                         byte[] buffer = new byte[8192];
                         int n = socket.getInputStream().read(buffer);
@@ -39,14 +43,10 @@ public class HttpServer {
                         }
                     }
                 });
-                requestHandlerThread.start();
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public static void main(String[] args) {
-        new HttpServer(8189).start();
-    }
 }
