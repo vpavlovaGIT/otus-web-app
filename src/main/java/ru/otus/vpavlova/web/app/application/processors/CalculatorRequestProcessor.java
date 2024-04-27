@@ -1,4 +1,4 @@
-package ru.otus.vpavlova.web.app.processors;
+package ru.otus.vpavlova.web.app.application.processors;
 
 import java.io.IOException;
 import java.io.OutputStream;
