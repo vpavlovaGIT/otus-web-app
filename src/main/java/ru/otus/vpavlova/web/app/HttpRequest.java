@@ -37,7 +37,7 @@ public class HttpRequest {
     }
 
     public void tryToParseBody() {
-        if (method == HttpMethod.POST || method == HttpMethod.PUT || method == HttpMethod.PATCH) {
+        if (method.isCanHaveBody()) {
             List<String> lines = rawRequest.lines().collect(Collectors.toList());
             int splitLine = -1;
             for (int i = 0; i < lines.size(); i++) {
