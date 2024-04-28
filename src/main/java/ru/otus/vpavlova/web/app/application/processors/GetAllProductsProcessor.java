@@ -20,7 +20,5 @@ public class GetAllProductsProcessor implements RequestProcessor {
         String result = "HTTP/1.1 200 OK\r\nContent-Type: application/json\r\n\r\n" + gson.toJson(items);
         output.write(result.getBytes(StandardCharsets.UTF_8));
         logger.info("Processing request to get all products");
-        logger.debug("Some debug information");
-        logger.error("An error occurred");
     }
 }

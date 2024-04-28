@@ -13,8 +13,6 @@ public class UnknownOperationRequestProcessor implements RequestProcessor {
     public void execute(HttpRequest httpRequest, OutputStream output) throws IOException {
         String response = "HTTP/1.1 200 OK\r\nContent-Type: text/html\r\n\r\n<html><body><h1>UNKNOWN OPERATION REQUEST!!!</h1></body></html>";
         output.write(response.getBytes(StandardCharsets.UTF_8));
-        logger.warn("Unknown operation requested");
-        logger.trace("Some trace information");
-        logger.error("Error handling unknown operation");
+        logger.info("Unknown operation requested");
     }
 }
