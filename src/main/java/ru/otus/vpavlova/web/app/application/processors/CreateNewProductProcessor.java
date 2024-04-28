@@ -25,6 +25,8 @@ public class CreateNewProductProcessor implements RequestProcessor {
             output.write(response.getBytes(StandardCharsets.UTF_8));
             logger.info("New product creation request processed successfully");
         } catch (JsonSyntaxException e) {
+            String errorResponse = "HTTP/1.1 400 Bad Request\r\nContent-Type: text/plain\r\n\r\nError processing the request: " + e.getMessage();
+            output.write(errorResponse.getBytes(StandardCharsets.UTF_8));
             logger.error("Error processing new product creation request: " + e.getMessage());
         }
     }
