@@ -31,11 +31,13 @@ public class HttpRequest {
     public HttpRequest(String rawRequest) {
         this.rawRequest = rawRequest;
         this.parseRequestLine();
-        this.tryToParseBody();
+        if (method != HttpMethod.GET) {
+            this.tryToParseBody();
+        }
     }
 
     public void tryToParseBody() {
-        if (method == HttpMethod.POST) {
+        if (method == HttpMethod.POST || method == HttpMethod.PUT || method == HttpMethod.PATCH) {
             List<String> lines = rawRequest.lines().collect(Collectors.toList());
             int splitLine = -1;
             for (int i = 0; i < lines.size(); i++) {
@@ -53,14 +55,6 @@ public class HttpRequest {
             }
         }
     }
-
-    // POST /products HTTP/1.1
-    // Content-Type: application/json
-    //
-    // {
-    //   "title": "a",
-    //   "price": 100
-    // }
 
     public void parseRequestLine() {
         int startIndex = rawRequest.indexOf(' ');
