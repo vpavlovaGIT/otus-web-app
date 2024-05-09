@@ -15,7 +15,7 @@ public class Dispatcher {
         this.router.put("GET /calc", new CalculatorRequestProcessor());
         this.router.put("GET /hello", new HelloWorldRequestProcessor());
         this.router.put("GET /items", new GetAllProductsProcessor());
-        this.router.put("POST /items", new CreateNewProductProcessor());
+        this.router.put("POST /items", new CreateNewItemProcessor());
         this.unknownOperationRequestProcessor = new UnknownOperationRequestProcessor();
     }
 
