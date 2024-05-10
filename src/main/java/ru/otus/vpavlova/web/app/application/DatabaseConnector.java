@@ -50,4 +50,23 @@ public class DatabaseConnector {
         }
         return items;
     }
+
+    public static Item getItemById(String id) {
+        String query = "SELECT id, title, price FROM items WHERE id = ?";
+        try (Connection connection = getConnection();
+             PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setObject(1, UUID.fromString(id));
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                Item item = new Item();
+                item.setId(UUID.fromString(resultSet.getString("id")));
+                item.setTitle(resultSet.getString("title"));
+                item.setPrice(resultSet.getInt("price"));
+                return item;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 }

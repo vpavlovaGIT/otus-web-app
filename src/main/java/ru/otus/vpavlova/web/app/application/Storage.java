@@ -2,7 +2,6 @@ package ru.otus.vpavlova.web.app.application;
 
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -15,9 +14,13 @@ public class Storage {
     }
 
     public static List<Item> getItems() {
-        List<Item> items = new ArrayList<>();
+        List<Item> items;
         items = DatabaseConnector.getAllItems();
         return items;
+    }
+
+    public Item getItemById(String id) {
+        return DatabaseConnector.getItemById(id);
     }
 
     public static boolean save(Item item) {

@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.HashMap;
 import java.util.Map;
+import ru.otus.vpavlova.web.app.application.Storage;
 import ru.otus.vpavlova.web.app.application.processors.*;
 
 public class Dispatcher {
@@ -16,6 +17,7 @@ public class Dispatcher {
         this.router.put("GET /hello", new HelloWorldRequestProcessor());
         this.router.put("GET /items", new GetAllProductsProcessor());
         this.router.put("POST /items", new CreateNewItemProcessor());
+        this.router.put("GET /getItem", new GetItemByIdProcessor(new Storage()));
         this.unknownOperationRequestProcessor = new UnknownOperationRequestProcessor();
     }
 
