@@ -84,4 +84,17 @@ public class DatabaseConnector {
             return false;
         }
     }
+
+    public static boolean deleteItem(String id) {
+        try (Connection connection = DatabaseConnector.getConnection()) {
+            String query = "DELETE FROM items WHERE id = ?";
+            try (PreparedStatement statement = connection.prepareStatement(query)) {
+                statement.setObject(1, UUID.fromString(id));
+                int rowsDeleted = statement.executeUpdate();
+                return rowsDeleted > 0;
+            }
+        } catch (SQLException e) {
+            return false;
+        }
+    }
 }

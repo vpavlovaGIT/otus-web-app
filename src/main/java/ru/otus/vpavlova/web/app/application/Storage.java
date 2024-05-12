@@ -43,4 +43,8 @@ public class Storage {
         return DatabaseConnector.updateItem(item);
     }
 
+    public boolean deleteItem(String id) {
+        return DatabaseConnector.deleteItem(id);
+    }
+
 }
