@@ -39,7 +39,6 @@ public class GetItemByIdProcessor implements RequestProcessor {
     public void execute(HttpRequest httpRequest, OutputStream output) throws IOException {
         String id = httpRequest.getParameter("id");
         Item item = storage.getItemById(id);
-        System.out.println(item);
         if (item != null) {
             String jsonResponse = new Gson().toJson(item);
             byte[] responseBytes = jsonResponse.getBytes(StandardCharsets.UTF_8);

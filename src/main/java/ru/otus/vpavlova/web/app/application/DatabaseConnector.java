@@ -69,4 +69,19 @@ public class DatabaseConnector {
         }
         return null;
     }
+
+    public static boolean updateItem(Item item) {
+        try (Connection connection = getConnection()) {
+            String query = "UPDATE items SET title = ?, price = ? WHERE id = ?";
+            try (PreparedStatement statement = connection.prepareStatement(query)) {
+                statement.setString(1, item.getTitle());
+                statement.setInt(2, item.getPrice());
+                statement.setObject(3, item.getId());
+                int rowsUpdated = statement.executeUpdate();
+                return rowsUpdated > 0;
+            }
+        } catch (SQLException e) {
+            return false;
+        }
+    }
 }

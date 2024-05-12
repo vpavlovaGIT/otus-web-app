@@ -39,4 +39,8 @@ public class Storage {
         }
     }
 
+    public boolean updateItem(Item item) {
+        return DatabaseConnector.updateItem(item);
+    }
+
 }
