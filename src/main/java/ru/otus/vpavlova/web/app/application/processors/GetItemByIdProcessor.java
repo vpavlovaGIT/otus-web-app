@@ -3,12 +3,10 @@ package ru.otus.vpavlova.web.app.application.processors;
 import com.google.gson.Gson;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import ru.otus.vpavlova.web.app.HttpRequest;
-import ru.otus.vpavlova.web.app.application.DatabaseConnector;
 import ru.otus.vpavlova.web.app.application.Item;
 import ru.otus.vpavlova.web.app.application.Storage;
 
@@ -39,16 +37,14 @@ public class GetItemByIdProcessor implements RequestProcessor {
      */
     @Override
     public void execute(HttpRequest httpRequest, OutputStream output) throws IOException {
-        String encodedId = httpRequest.getParameter("id");
-        String decodedId = URLDecoder.decode(encodedId, StandardCharsets.UTF_8.toString());
-        System.out.println(decodedId);
-        Item item = DatabaseConnector.getItemById(decodedId);
+        String id = httpRequest.getParameter("id");
+        Item item = storage.getItemById(id);
         if (item != null) {
             String jsonResponse = new Gson().toJson(item);
             byte[] responseBytes = jsonResponse.getBytes(StandardCharsets.UTF_8);
             httpResponse(output, 200, responseBytes);
         } else {
-            logger.error("Продукт с указанным id не найден: {}", decodedId);
+            logger.error("Продукт с указанным id не найден: {}", id);
             String errorMsg = "Продукт с указанным id не найден";
             byte[] errorBytes = errorMsg.getBytes(StandardCharsets.UTF_8);
             httpResponse(output, 404, errorBytes);
