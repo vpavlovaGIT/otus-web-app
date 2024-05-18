@@ -26,7 +26,6 @@ public class GetAllProductsProcessor implements RequestProcessor {
      */
     @Override
     public void execute(HttpRequest httpRequest, OutputStream output) throws IOException {
-        Storage storage = new Storage();
         List<Item> allItems = Storage.getItems();
 
         Gson gson = new Gson();

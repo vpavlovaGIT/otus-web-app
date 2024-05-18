@@ -17,9 +17,10 @@ public class Dispatcher {
         this.router.put("GET /hello", new HelloWorldRequestProcessor());
         this.router.put("GET /items", new GetAllProductsProcessor());
         this.router.put("POST /items", new CreateNewItemProcessor());
-        this.router.put("GET /getItem", new GetItemByIdProcessor(new Storage()));
-        this.router.put("PUT /updateItem", new UpdateItemProcessor(new Storage()));
+        this.router.put("GET /item", new GetItemByIdProcessor(new Storage()));
+        this.router.put("PUT /items", new UpdateItemProcessor(new Storage()));
         this.router.put("DELETE /items", new DeleteItemProcessor(new Storage()));
+        this.router.put("GET /file", new FileRequestProcessor());
         this.unknownOperationRequestProcessor = new UnknownOperationRequestProcessor();
     }
 

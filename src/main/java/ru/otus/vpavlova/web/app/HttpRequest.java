@@ -58,17 +58,39 @@ public class HttpRequest {
 
     public void parseRequestLine() {
         int startIndex = rawRequest.indexOf(' ');
+        if (startIndex == -1) {
+            System.out.println("Ошибка: не найден пробел в начале строки запроса.");
+            return;
+        }
+
         int endIndex = rawRequest.indexOf(' ', startIndex + 1);
+        if (endIndex == -1) {
+            System.out.println("Ошибка: не найден второй пробел в строке запроса.");
+            return;
+        }
+
         this.uri = rawRequest.substring(startIndex + 1, endIndex);
-        this.method = HttpMethod.valueOf(rawRequest.substring(0, startIndex));
+
+        try {
+            this.method = HttpMethod.valueOf(rawRequest.substring(0, startIndex));
+        } catch (IllegalArgumentException e) {
+            System.out.println("Ошибка: некорректный метод HTTP.");
+            return;
+        }
+
         this.parameters = new HashMap<>();
         if (uri.contains("?")) {
             String[] elements = uri.split("[?]");
             this.uri = elements[0];
-            String[] keysValues = elements[1].split("&");
-            for (String o : keysValues) {
-                String[] keyValue = o.split("=");
-                this.parameters.put(keyValue[0], keyValue[1]);
+
+            if (elements.length > 1) {
+                String[] keysValues = elements[1].split("&");
+                for (String keyValue : keysValues) {
+                    String[] pair = keyValue.split("=");
+                    if (pair.length == 2) {
+                        this.parameters.put(pair[0], pair[1]);
+                    }
+                }
             }
         }
     }
