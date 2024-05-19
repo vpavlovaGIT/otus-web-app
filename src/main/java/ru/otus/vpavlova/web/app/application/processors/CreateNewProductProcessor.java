@@ -19,11 +19,18 @@ public class CreateNewProductProcessor implements RequestProcessor {
         Gson gson = new Gson();
         try {
             Item item = gson.fromJson(httpRequest.getBody(), Item.class);
-            Storage.save(item);
-            String jsonOutItem = gson.toJson(item);
-            String response = "HTTP/1.1 200 OK\r\nContent-Type: application/json\r\n\r\n" + jsonOutItem;
-            output.write(response.getBytes(StandardCharsets.UTF_8));
-            logger.info("New product creation request processed successfully");
+            boolean isSaved = Storage.save(item);
+
+            if (isSaved) {
+                String jsonOutItem = gson.toJson(item);
+                String response = "HTTP/1.1 200 OK\r\nContent-Type: application/json\r\n\r\n" + jsonOutItem;
+                output.write(response.getBytes(StandardCharsets.UTF_8));
+                logger.info("New product creation request processed successfully");
+            } else {
+                String errorResponse = "HTTP/1.1 500 Internal Server Error\r\nContent-Type: text/plain\r\n\r\nFailed to save the new product";
+                output.write(errorResponse.getBytes(StandardCharsets.UTF_8));
+                logger.error("Failed to save the new product");
+            }
         } catch (JsonSyntaxException e) {
             String errorResponse = "HTTP/1.1 400 Bad Request\r\nContent-Type: text/plain\r\n\r\nError processing the request: " + e.getMessage();
             output.write(errorResponse.getBytes(StandardCharsets.UTF_8));

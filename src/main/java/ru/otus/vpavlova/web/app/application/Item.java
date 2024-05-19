@@ -35,9 +35,18 @@ public class Item {
     }
 
     public Item(String title, int price) {
-        this.id = UUID.randomUUID();
+        this.id = UUID.fromString(UUID.randomUUID().toString());
         this.title = title;
         this.price = price;
+    }
+
+    @Override
+    public String toString() {
+        return "Item{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", price=" + price +
+                '}';
     }
 }
 

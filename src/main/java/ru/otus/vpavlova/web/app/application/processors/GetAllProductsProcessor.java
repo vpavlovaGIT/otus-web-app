@@ -11,14 +11,29 @@ import ru.otus.vpavlova.web.app.HttpRequest;
 import ru.otus.vpavlova.web.app.application.Item;
 import ru.otus.vpavlova.web.app.application.Storage;
 
+/**
+ * Обработчик запроса для получения всех продуктов.
+ */
 public class GetAllProductsProcessor implements RequestProcessor {
     private static final Logger logger = LogManager.getLogger(GetAllProductsProcessor.class);
+
+    /**
+     * Метод execute обрабатывает GET запрос для получения всех продуктов.
+     *
+     * @param httpRequest HTTP запрос (для GET запроса не требуется тело).
+     * @param output выходной поток для отправки ответа.
+     * @throws IOException если возникают проблемы с чтением или записью данных.
+     */
     @Override
     public void execute(HttpRequest httpRequest, OutputStream output) throws IOException {
-        List<Item> items = Storage.getItems();
+        List<Item> allItems = Storage.getItems();
+
         Gson gson = new Gson();
-        String result = "HTTP/1.1 200 OK\r\nContent-Type: application/json\r\n\r\n" + gson.toJson(items);
-        output.write(result.getBytes(StandardCharsets.UTF_8));
-        logger.info("Processing request to get all products");
+        String allItemsJson = gson.toJson(allItems);
+
+        String response = "HTTP/1.1 200 OK\r\nContent-Type: application/json\r\n\r\n" + allItemsJson;
+        output.write(response.getBytes(StandardCharsets.UTF_8));
+
+        logger.info("All items retrieval request processed successfully");
     }
 }
